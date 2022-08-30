@@ -1,7 +1,10 @@
 package com.kh.myapp3.web;
 
 
+import com.kh.myapp3.domain.Product;
+import com.kh.myapp3.domain.svc.ProductSVC;
 import com.kh.myapp3.web.form.SaveForm;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Controller
 @RequestMapping("/product")
+@RequiredArgsConstructor
 public class ProductController {
+
+
+  private final ProductSVC productSVC;
 
   //등록양식
   @GetMapping
@@ -23,9 +30,16 @@ public class ProductController {
   @PostMapping()
   public String saver(SaveForm saveForm){
     log.info("saveForm:{}",saveForm);
+    Product product = new Product();
+    product.setPname(saveForm.getPname());
+    product.setQuatity(saveForm.getQuantity());
+    product.setPrice(saveForm.getPrice());
+
+    Integer productId = productSVC.save(product);
 
 
-    return "redirect:/product/1";   //상품상세 view
+
+    return "redirect:/product/1"+productId;   //상품상세 view
 
   }
 
