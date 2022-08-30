@@ -1,12 +1,10 @@
-package com.kh.myapp3;
+package com.kh.myapp3.web;
 
 
+import com.kh.myapp3.web.form.SaveForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -23,7 +21,9 @@ public class ProductController {
 
   //등록처리
   @PostMapping()
-  public String saver(){
+  public String saver(SaveForm saveForm){
+    log.info("saveForm:{}",saveForm);
+
 
     return "redirect:/product/1";   //상품상세 view
 
