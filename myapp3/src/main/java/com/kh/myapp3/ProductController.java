@@ -52,4 +52,20 @@ public class ProductController {
     return "redirect:/product/1";     //상품 상세 view
   }
 
+
+  //삭제처리(화면필요 x)
+  @GetMapping("/{pid}/del")
+  public String delete(){
+
+    return "redirect:/products";    //전체 목록 view
+  }
+
+  //목록화면
+  @GetMapping("/all")
+  public String list(){
+
+    return "product/all";     //전체목록 view
+  }
+
+
 }
