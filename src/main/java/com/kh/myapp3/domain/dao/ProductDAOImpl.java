@@ -154,4 +154,23 @@ public class ProductDAOImpl implements ProductDAO{
 //    Integer product_id = Integer.valueOf(keyHolder.getKeys().get("product_id").toString());
 //    return product_id;
 //  }
+//}
+
+
+//전체삭제
+@Override
+public void deleteAll(){
+  String sql = "delete from product";
+  int rows = jt.update(sql);
+  log.info("삭제건수:{}",rows);
 }
+
+//상품아이디 생성
+@Override
+public Long generatePid(){
+  String sql = "select product_product_id_seq.nextval from dual";
+  Long newProductId = jt.queryForObject(sql, Long.class);
+  return newProductId;
+}
+}
+

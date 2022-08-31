@@ -87,7 +87,7 @@ public class ProductDAOImplTest {
     List<Product> list =  productDAO.findAll();
 //    log.info("전체목록={}",list);
     //람다식
-//    list.stream().forEach(ele->log.info("상품:{}",ele));
+    list.stream().forEach(ele->log.info("상품:{}",ele));
     //향상된for문
     for(Product p : list){
       log.info("상품:{}",p);
