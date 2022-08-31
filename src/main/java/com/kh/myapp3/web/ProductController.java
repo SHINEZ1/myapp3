@@ -32,7 +32,7 @@ public class ProductController {
     log.info("saveForm:{}",saveForm);
     Product product = new Product();
     product.setPname(saveForm.getPname());
-    product.setQuatity(saveForm.getQuantity());
+    product.setQuantity(saveForm.getQuantity());
     product.setPrice(saveForm.getPrice());
 
     Integer productId = productSVC.save(product);

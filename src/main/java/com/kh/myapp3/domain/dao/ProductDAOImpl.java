@@ -58,7 +58,7 @@ public class ProductDAOImpl implements ProductDAO{
       public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
         PreparedStatement pstmt = con.prepareStatement(sql.toString(),new String[]{"product_id"});
         pstmt.setString(1,product.getPname());
-        pstmt.setInt(2,product.getQuatity());
+        pstmt.setInt(2,product.getQuantity());
         pstmt.setInt(3,product.getPrice());
         return pstmt;
       }
