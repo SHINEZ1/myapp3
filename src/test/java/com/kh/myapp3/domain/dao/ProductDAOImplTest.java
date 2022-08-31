@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @Slf4j
 @SpringBootTest
 public class ProductDAOImplTest {
@@ -50,19 +52,49 @@ public class ProductDAOImplTest {
     Long productId = 6l;
 
     Product product = new Product();
+    product.setProductId(productId);
     product.setPname("선풍기");
-    product.setQuantity(5);
+    product.setQuantity(7);
     product.setPrice(50000);
 
     productDAO.update(productId, product);
 
 
     Product findedProduct = productDAO.findById(productId);
-    Assertions.assertThat(findedProduct.getPname())
-        .isEqualTo(product.getPname());
-    Assertions.assertThat(findedProduct.getQuantity())
-        .isEqualTo(product.getQuantity());
-    Assertions.assertThat(findedProduct.getPrice()).isEqualTo(product.getPrice());
+//    Assertions.assertThat(findedProduct.getPname())
+//        .isEqualTo(product.getPname());
+//    Assertions.assertThat(findedProduct.getQuantity())
+//        .isEqualTo(product.getQuantity());
+//    Assertions.assertThat(findedProduct.getPrice()).isEqualTo(product.getPrice());
+    Assertions.assertThat(findedProduct).isEqualTo(product);
 
   }
+
+  @Test
+  @DisplayName("삭제")
+  void delete(){
+    Long productId=7l;
+    productDAO.delete(productId);
+
+    Product findedProduct = productDAO.findById(productId);
+    Assertions.assertThat(findedProduct).isNull();      //null이면 성공
+  }
+
+
+  @Test
+  @DisplayName("목록")
+  void all(){
+    List<Product> list =  productDAO.findAll();
+//    log.info("전체목록={}",list);
+    //람다식
+//    list.stream().forEach(ele->log.info("상품:{}",ele));
+    //향상된for문
+    for(Product p : list){
+      log.info("상품:{}",p);
+    }
+
+
+    Assertions.assertThat(list.size()).isEqualTo(4);
+  }
+
 }

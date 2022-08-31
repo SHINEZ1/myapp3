@@ -3,6 +3,7 @@ package com.kh.myapp3.domain.dao;
 import com.kh.myapp3.domain.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -80,8 +81,13 @@ public class ProductDAOImpl implements ProductDAO{
     sql.append("from product ");
     sql.append("where product_id = ? ");
 
-    Product product= jt.queryForObject(
-        sql.toString(),new BeanPropertyRowMapper<>(Product.class),productId);
+    Product product= null;
+    try {
+      product = jt.queryForObject(
+          sql.toString(),new BeanPropertyRowMapper<>(Product.class),productId);
+    } catch (EmptyResultDataAccessException e) {
+      log.info("삭제대상 상품이 없습니다 상품아이디={}",productId);
+    }
 
     return product;
   }
@@ -112,7 +118,7 @@ public class ProductDAOImpl implements ProductDAO{
     sql.append("from product ");
 
     //case1) 자동매핑 sql결과 레코드와 동일한 구조의 java객체가 존재할 경우
-    List<Product> result = jt.query(sql.toString(),new BeanPropertyRowMapper<Product>());
+    List<Product> result = jt.query(sql.toString(),new BeanPropertyRowMapper<>(Product.class));
 
     //case2) 수동매핑 sql결과 레코드의 컬럼명과 java객체의 멤버이름이 다른 경우 or 타입이 다른 경우
 //    List<Product> result =
