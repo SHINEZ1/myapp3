@@ -27,7 +27,7 @@ public interface ProductDAO {
    * 수정
    * @param product     //수정할 상품정보
    */
-  void update(Product product);
+  void update(Long productId, Product product);
 
 
   /**

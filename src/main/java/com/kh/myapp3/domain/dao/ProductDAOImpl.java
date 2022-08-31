@@ -3,6 +3,7 @@ package com.kh.myapp3.domain.dao;
 import com.kh.myapp3.domain.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -79,24 +80,54 @@ public class ProductDAOImpl implements ProductDAO{
     sql.append("from product ");
     sql.append("where product_id = ? ");
 
-    Product product= jt.queryForObject(sql.toString(),Product.class,productId);
+    Product product= jt.queryForObject(
+        sql.toString(),new BeanPropertyRowMapper<>(Product.class),productId);
 
     return product;
   }
   //수정
   @Override
-  public void update(Product product) {
+  public void update(Long productId, Product product) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("update product ");
+    sql.append("   set pname = ?, ");
+    sql.append("       quantity = ?, ");
+    sql.append("       price = ? ");
+    sql.append(" where product_id =  ? ");
 
+    jt.update(sql.toString(),product.getPname(),product.getQuantity(),product.getPrice(),productId);
   }
   //삭제
   @Override
   public void delete(Long productId) {
+    String sql = ("delete from product where product_id= ? ");
+    jt.update(sql, productId);
 
   }
   //목록
   @Override
   public List<Product> findAll() {
-    return null;
+    StringBuffer sql = new StringBuffer();
+    sql.append("select product_id, pname, quantity, price ");
+    sql.append("from product ");
+
+    //case1) 자동매핑 sql결과 레코드와 동일한 구조의 java객체가 존재할 경우
+    List<Product> result = jt.query(sql.toString(),new BeanPropertyRowMapper<Product>());
+
+    //case2) 수동매핑 sql결과 레코드의 컬럼명과 java객체의 멤버이름이 다른 경우 or 타입이 다른 경우
+//    List<Product> result =
+//              jt.query(sql.toString(), new RowMapper<Product>() {
+//
+//                @Override
+//                public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                  Product product = new Product();
+//                  product.setProductId(rs.getLong("product_id"));
+//                  product.setQuantity(rs.getInt("quantity"));
+//                  product.setPrice(rs.getInt("price"));
+//                  return product;
+//                }
+//              });
+    return result;
   }
 //  @Override
 //  public Integer save(Product product) {
