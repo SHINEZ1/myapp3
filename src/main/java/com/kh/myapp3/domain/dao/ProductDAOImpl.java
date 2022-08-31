@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -48,7 +49,7 @@ public class ProductDAOImpl implements ProductDAO{
 //    return product_id;
 //  }
   @Override
-  public Integer save(Product product) {
+  public Product save(Product product) {
     StringBuffer sql = new StringBuffer();
     sql.append("insert into product values(product_product_id_seq.nextval,?,?,?)");
 
@@ -64,8 +65,38 @@ public class ProductDAOImpl implements ProductDAO{
       }
     }, keyHolder);
 
-    Integer product_id = Integer.valueOf(keyHolder.getKeys().get("product_id").toString());
-    return product_id;
+    Long product_id = Long.valueOf(keyHolder.getKeys().get("product_id").toString());
+
+    product.setProductId(product_id);
+    return product;
+  }
+
+  //조회
+  @Override
+  public Product findById(Long productId) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select product_id, pname, quantity, price ");
+    sql.append("from product ");
+    sql.append("where product_id = ? ");
+
+    Product product= jt.queryForObject(sql.toString(),Product.class,productId);
+
+    return product;
+  }
+  //수정
+  @Override
+  public void update(Product product) {
+
+  }
+  //삭제
+  @Override
+  public void delete(Long productId) {
+
+  }
+  //목록
+  @Override
+  public List<Product> findAll() {
+    return null;
   }
 //  @Override
 //  public Integer save(Product product) {
