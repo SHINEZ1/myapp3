@@ -50,6 +50,8 @@ public class ProductDAOImpl implements ProductDAO{
 //    Integer product_id = Integer.valueOf(keyHolder.getKeys().get("product_id").toString());
 //    return product_id;
 //  }
+
+  //등록
   @Override
   public Product save(Product product) {
     StringBuffer sql = new StringBuffer();
@@ -83,7 +85,7 @@ public class ProductDAOImpl implements ProductDAO{
 
     Product product= null;
     try {
-      product = jt.queryForObject(
+      product = jt.queryForObject(    //단일레코드
           sql.toString(),new BeanPropertyRowMapper<>(Product.class),productId);
     } catch (EmptyResultDataAccessException e) {
       log.info("삭제대상 상품이 없습니다 상품아이디={}",productId);
@@ -169,7 +171,7 @@ public void deleteAll(){
 @Override
 public Long generatePid(){
   String sql = "select product_product_id_seq.nextval from dual";
-  Long newProductId = jt.queryForObject(sql, Long.class);
+  Long newProductId = jt.queryForObject(sql, Long.class);   //단일레코드 단일컬럼
   return newProductId;
 }
 }
