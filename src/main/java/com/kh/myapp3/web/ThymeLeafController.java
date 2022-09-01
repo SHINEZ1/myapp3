@@ -9,8 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -23,16 +22,23 @@ public class ThymeLeafController {
     model.addAttribute("uhello","<b>반갑습니다.</b>");
 
     Person p1 = new Person("홍길남",40);
-    Person p2 = new Person("홍길북",40);
+    Person p2 = new Person("홍길북",50);
 
     model.addAttribute("p1",p2);
     model.addAttribute("p1",p2);
 
-    List<Person> persons = new ArrayList<>();
-    persons.add(p1);
-    persons.add(p2);
+    List<Person> personList = new ArrayList<>();
+    personList.add(p1); personList.add(p2);
+    model.addAttribute("personList", personList);
 
-    model.addAttribute("persons", persons);
+    Map<String,Person> personMap = new LinkedHashMap<>();
+    personMap.put("1",p1);personMap.put("2",p2);
+    model.addAttribute("personMap",personMap);
+
+    Set<Person> personSet = new HashSet<>();
+    personSet.add(p1);personSet.add(p2);
+    model.addAttribute("personSet", personSet);
+
 
     return "thyme/text";
   }
